@@ -72,6 +72,9 @@ test('bets move chips and reveals deal anonymous cards without changing game tim
  await page.getByRole('button',{name:'flop revealed →'}).click();
  await expect(page.locator('.board-card.dealt')).toHaveCount(3);
  await expect(page.locator('.board-card.dealing')).toHaveCount(3);
+ await expect(page.locator('.board-card.dealing').first()).toHaveCSS('animation-name', 'cinematic-deal');
+ await expect(page.locator('.board-card.dealing').first()).toHaveCSS('animation-duration', '1.8s');
+ await expect(page.locator('.board-card.dealing').nth(1)).toHaveCSS('animation-delay', '0.4s');
  await page.getByRole('button',{name:/Undo last action/}).click();
  await expect(page.locator('.board-card.dealt')).toHaveCount(0);
  await page.getByRole('button',{name:'flop revealed →'}).click();
@@ -126,7 +129,7 @@ test('split winners receive animated chips and seats show current stack values',
  await page.getByRole('button',{name:'Confirm payout'}).click();
  expect(await page.evaluate(() => window.payoutWinners)).toEqual(['0','0','0','1','1','1']);
  await expect(page.locator('.win-banner')).toContainText('Alice +15 · Bob +15');
- await expect(page.locator('.confetti')).toHaveCount(32);
+ await expect(page.locator('.confetti')).toHaveCount(64);
  await expect(page.locator('.win-celebration')).toHaveCSS('pointer-events', 'none');
  await expect(page.locator('[data-seat="0"] .stack')).toContainText('1005');
  await expect(page.locator('[data-seat="0"] .player-chips')).toHaveAttribute('aria-label', 'Alice stack breakdown: 1 gold 1000-chip, 1 red 5-chip');

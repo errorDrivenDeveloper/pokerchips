@@ -68,6 +68,20 @@ function animateBet(origin, actor) {
   { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(.5)`, opacity: 0 }
  ], { duration: 650, easing: 'ease-in-out' });
  animation.finished.catch(() => {}).finally(() => chip.remove());
+ // A little trail follows the wager; it never delays the underlying action.
+ for (let i = 0; i < 8; i++) {
+  const spark = document.createElement('i');
+  spark.className = 'bet-spark'; spark.setAttribute('aria-hidden', 'true');
+  spark.style.left = chip.style.left; spark.style.top = chip.style.top;
+  document.body.append(spark);
+  const offset = (i - 3.5) * 8;
+  const trail = spark.animate([
+   {transform:'translate(-50%,-50%) scale(0)', opacity:0},
+   {transform:`translate(calc(-50% + ${dx * .55 + offset}px), calc(-50% + ${dy * .55 - 18}px)) scale(1)`, opacity:1, offset:.55},
+   {transform:`translate(calc(-50% + ${dx + offset}px), calc(-50% + ${dy + offset}px)) scale(0)`, opacity:0}
+  ], {duration:700, delay:i * 35, easing:'ease-out'});
+  trail.finished.catch(() => {}).finally(() => spark.remove());
+ }
 }
 
 function animatePayout(origin, awards) {
@@ -79,7 +93,7 @@ function animatePayout(origin, awards) {
  celebration.className = 'win-celebration';
  celebration.setAttribute('aria-hidden', 'true');
  const winnersText = winners.map(([id, amount]) => `${name(Number(id))} +${amount}`).join(' · ');
- celebration.innerHTML = `<div class="win-banner"><span>✦ &nbsp; ${language === 'de' ? (winners.length > 1 ? 'GEWINNER' : 'GEWINNER') : (winners.length > 1 ? 'WINNERS' : 'WINNER')} &nbsp; ✦</span><strong>${winnersText}</strong></div>${Array.from({length: 32}, (_, i) => `<i class="confetti confetti-${i % 5}" style="--x:${5 + (i * 37) % 90}vw;--delay:${(i % 8) * 70}ms;--drift:${(i % 2 ? 1 : -1) * (25 + i % 5 * 12)}px;--spin:${i % 2 ? 1 : -1}turn"></i>`).join('')}`;
+ celebration.innerHTML = `<div class="win-banner"><span>✦ &nbsp; ${language === 'de' ? (winners.length > 1 ? 'GEWINNER' : 'GEWINNER') : (winners.length > 1 ? 'WINNERS' : 'WINNER')} &nbsp; ✦</span><strong>${winnersText}</strong></div>${Array.from({length: 64}, (_, i) => `<i class="confetti confetti-${i % 5}" style="--x:${5 + (i * 37) % 90}vw;--delay:${(i % 8) * 70}ms;--drift:${(i % 2 ? 1 : -1) * (25 + i % 5 * 12)}px;--spin:${i % 2 ? 1 : -1}turn"></i>`).join('')}`;
  document.body.append(celebration);
  setTimeout(() => celebration.remove(), 3200);
  Object.entries(awards).filter(([, amount]) => amount > 0).forEach(([id], winnerIndex) => {

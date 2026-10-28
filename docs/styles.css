@@ -159,3 +159,64 @@ button { touch-action: manipulation; }
 .header-actions { display:flex; align-items:center; gap:.5rem; }
 .language-button { padding:.5rem .7rem; font-size:.75rem; }
 .setup > .language-button { float:right; }
+
+/* Experimental: midnight casino atmosphere, with decoration kept behind UI. */
+body { position:relative; isolation:isolate; background:#091810; }
+body::before, body::after { content:''; position:fixed; inset:-30%; z-index:-1; pointer-events:none; }
+body::before { background:radial-gradient(ellipse at 18% 12%,#7b613029,transparent 30%),radial-gradient(ellipse at 85% 75%,#1b826934,transparent 35%),radial-gradient(ellipse at 50% 45%,#163b29,#07140e 68%); animation:casino-lights 15s ease-in-out infinite alternate; }
+body::after { opacity:.18; background-image:repeating-linear-gradient(45deg,transparent 0 28px,#dec47c12 29px 30px,transparent 31px 60px),repeating-linear-gradient(-45deg,transparent 0 28px,#dec47c12 29px 30px,transparent 31px 60px); }
+.card { background:linear-gradient(155deg,#263b2eeb,#13271eee 70%); border-color:#c4a76566; box-shadow:0 20px 65px #0008,inset 0 1px #ffffff18; }
+.setup { position:relative; overflow:hidden; }
+.setup::after { content:'♠  ♥  ♣  ♦'; position:absolute; right:-1rem; top:5rem; color:#e9cb7a0d; font:700 6rem Georgia,serif; transform:rotate(-22deg); pointer-events:none; white-space:nowrap; }
+.setup form,.setup h1,.setup p,.setup .eyebrow,.setup .language-button { position:relative; z-index:1; }
+header h1 { text-shadow:0 3px 14px #000,0 0 25px #f3d97b3a; }
+.status { border-color:#dbbd6e55; background:linear-gradient(90deg,#cba95a10,transparent 70%); }
+.table { position:relative; background:radial-gradient(ellipse at 35% 25%,#288a5d,#10603c 48%,#064028 100%); border-color:#4c2e1b; box-shadow:0 0 0 3px #bc955c,0 0 0 8px #4a301d,0 18px 45px #000b,0 0 40px #0b9c5b30,inset 0 0 80px #022e18; }
+.table::before,.table::after { content:''; position:absolute; inset:8%; border-radius:50%; pointer-events:none; }
+.table::before { border:1px solid #f5df9a4a; box-shadow:inset 0 0 0 5px #f6d98f0b; }
+.table::after { inset:4%; background:conic-gradient(from 0deg,transparent 0 20%,#f8dd8a30 25%,transparent 30% 70%,#f8dd8a25 75%,transparent 80%); opacity:.35; animation:table-shimmer 14s linear infinite; }
+.felt { position:relative; z-index:1; border:1px dashed #e7d5984f; }
+.felt .eyebrow { text-shadow:0 0 10px #fff9; }
+.pot { color:#fff8dd; text-shadow:0 2px 0 #725a22,0 5px 16px #0009,0 0 28px #ffe19966; }
+.board-card.dealt { background:linear-gradient(145deg,#fffef0,#d5c9a3); border:2px solid #fff9dc; box-shadow:0 3px 7px #0009,inset 0 0 0 2px #a68a4a55; }
+.board-card.dealt span { text-shadow:0 0 8px #3d8c5a88; }
+.seat { position:relative; background:linear-gradient(140deg,#33533e,#192c21 75%); border-color:#8a855769; box-shadow:0 5px 15px #0005,inset 0 1px #ffffff10; animation:seat-entrance .45s ease both; }
+.seat.current { border-color:#f3d17b; box-shadow:0 0 0 1px #f1d17b,0 0 22px #ecc96b70,inset 0 0 20px #d6aa3a17; animation:seat-entrance .45s ease both,turn-glow 2.1s ease-in-out infinite; }
+.seat.current .seat-meta:last-child { color:#ffe496; font-weight:800; letter-spacing:.08em; }
+.seat b { box-shadow:0 0 8px #f6d77680; }
+.pot-chip { box-shadow:0 2px 2px #000b,0 0 6px #f5e3a02a; }
+button { transition:transform .15s ease, box-shadow .15s ease, background .15s ease; }
+button:not(:disabled):hover { transform:translateY(-2px); box-shadow:0 4px 15px #0006,0 0 12px #d6bb6a30; }
+button:not(:disabled):active { transform:translateY(1px) scale(.97); }
+.primary { background:linear-gradient(115deg,#b68a35,#ffe19a 48%,#cba455); border-color:#f7df9f; box-shadow:0 3px 14px #d5a83240,inset 0 1px #fff9; }
+.panel { animation:panel-arrival .35s ease-out both; }
+.win-banner { background:linear-gradient(120deg,#513113,#c18d32,#ffe6a0,#bb842d,#513113); background-size:250% 100%; color:#1a2a1c; text-shadow:0 1px #fff8; border-color:#fff0bf; animation:win-banner 3s ease both, banner-shine 1.2s ease-in-out infinite alternate; }
+.confetti { width:11px; height:19px; box-shadow:0 0 10px currentColor; }
+@keyframes casino-lights { from { transform:translate(-2%, -1%) scale(1); opacity:.75; } to { transform:translate(3%, 2%) scale(1.08); opacity:1; } }
+@keyframes table-shimmer { to { transform:rotate(360deg); } }
+@keyframes seat-entrance { from { opacity:.5; transform:translateY(7px) scale(.98); } to { opacity:1; transform:none; } }
+@keyframes turn-glow { 0%,100% { box-shadow:0 0 0 1px #f1d17b,0 0 12px #ecc96b55; } 50% { box-shadow:0 0 0 2px #f1d17b,0 0 26px #ecc96b99; } }
+@keyframes panel-arrival { from { opacity:.5; transform:translateY(6px); } to { opacity:1; transform:none; } }
+@keyframes banner-shine { from { background-position:0% 50%; } to { background-position:100% 50%; } }
+@media (prefers-reduced-motion:reduce) { body::before, .table::after, .seat, .seat.current, .panel, .win-banner { animation:none!important; } button { transition:none; } }
+.bet-spark { position:fixed; z-index:14; pointer-events:none; width:7px; height:7px; border-radius:50%; background:#fff2aa; box-shadow:0 0 6px 2px #ffdf75,0 0 18px #f6ad46; }
+.setup > .language-button { z-index:3; }
+
+/* An exaggerated deal: the card swoops towards the viewer, then returns. */
+.board { perspective:420px; overflow:visible; }
+.board-card.dealing {
+ position:relative;
+ z-index:3;
+ pointer-events:none;
+ transform-origin:center center;
+ backface-visibility:visible;
+ will-change:transform, opacity, box-shadow;
+ animation:cinematic-deal 1.8s ease-in-out backwards;
+ animation-delay:calc(var(--deal-order) * 400ms);
+}
+@keyframes cinematic-deal {
+ 0% { opacity:0; transform:translate(-35px,-30px) rotate(-12deg) scale(.55); filter:brightness(1); }
+ 45% { opacity:1; transform:translate(0,-24px) rotate(0deg) scale(3.2); filter:brightness(1.18); box-shadow:0 16px 30px #0009,0 0 28px #ffe5aa99; }
+ 100% { opacity:1; transform:translate(0,0) rotate(0deg) scale(1); filter:brightness(1); }
+}
+@media (prefers-reduced-motion:reduce) { .board-card.dealing { animation:none!important; } }
