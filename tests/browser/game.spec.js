@@ -117,6 +117,9 @@ test('split winners receive animated chips and seats show current stack values',
  await page.getByRole('button',{name:'Alice',exact:true}).click(); await page.getByRole('button',{name:'Bob',exact:true}).click();
  await page.getByRole('button',{name:'Confirm payout'}).click();
  expect(await page.evaluate(() => window.payoutWinners)).toEqual(['0','0','0','1','1','1']);
+ await expect(page.locator('.win-banner')).toContainText('Alice +15 · Bob +15');
+ await expect(page.locator('.confetti')).toHaveCount(32);
+ await expect(page.locator('.win-celebration')).toHaveCSS('pointer-events', 'none');
  await expect(page.locator('[data-seat="0"] .stack')).toContainText('1005');
  await expect(page.locator('[data-seat="0"] .player-chips')).toHaveAttribute('aria-label', 'Alice stack breakdown: 1 gold 1000-chip, 1 red 5-chip');
  await page.getByRole('button',{name:'Edit winners'}).click();
@@ -130,5 +133,6 @@ test('reduced motion disables winner effects', async ({page}) => {
  await page.getByRole('button',{name:'Confirm payout'}).click();
  await expect(page.locator('.payout-chip')).toHaveCount(0);
  await expect(page.locator('.celebrate-win')).toHaveCount(0);
+ await expect(page.locator('.win-celebration')).toHaveCount(0);
  await expect(page.getByText('Cara won 10')).toBeVisible();
 });

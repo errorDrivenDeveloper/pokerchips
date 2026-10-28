@@ -68,6 +68,15 @@ function animateBet(origin, actor) {
 function animatePayout(origin, awards) {
  if (!origin || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
  const fromX = origin.left + origin.width / 2, fromY = origin.top + origin.height / 2;
+ const winners = Object.entries(awards).filter(([, amount]) => amount > 0);
+ if (!winners.length) return;
+ const celebration = document.createElement('div');
+ celebration.className = 'win-celebration';
+ celebration.setAttribute('aria-hidden', 'true');
+ const winnersText = winners.map(([id, amount]) => `${name(Number(id))} +${amount}`).join(' · ');
+ celebration.innerHTML = `<div class="win-banner"><span>✦ &nbsp; WINNER${winners.length > 1 ? 'S' : ''} &nbsp; ✦</span><strong>${winnersText}</strong></div>${Array.from({length: 32}, (_, i) => `<i class="confetti confetti-${i % 5}" style="--x:${5 + (i * 37) % 90}vw;--delay:${(i % 8) * 70}ms;--drift:${(i % 2 ? 1 : -1) * (25 + i % 5 * 12)}px;--spin:${i % 2 ? 1 : -1}turn"></i>`).join('')}`;
+ document.body.append(celebration);
+ setTimeout(() => celebration.remove(), 3200);
  Object.entries(awards).filter(([, amount]) => amount > 0).forEach(([id], winnerIndex) => {
   const seat = root.querySelector(`[data-seat="${id}"]`);
   if (!seat) return;
@@ -116,6 +125,7 @@ function update(fn, effect) {
   const origin = effect === 'bet' && actor != null ? root.querySelector(`[data-seat="${actor}"]`)?.getBoundingClientRect() : effect === 'payout' ? root.querySelector('.pot-chips')?.getBoundingClientRect() : null;
   const next = fn();
   newlyDealt = effect === 'reveal' ? Array.from({length: boardSize(next.street) - boardSize(previous.street)}, (_, i) => boardSize(previous.street) + i) : [];
+  document.querySelector('.win-celebration')?.remove();
   state = next; error = ''; persist(); render();
   if (effect === 'bet' && actor != null && next.players[actor].stack < previous.players[actor].stack) animateBet(origin, actor);
   if (effect === 'payout') animatePayout(origin, next.awards);
