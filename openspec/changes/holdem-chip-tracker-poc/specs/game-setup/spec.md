@@ -7,7 +7,7 @@ Let a group configure a shared local session for tracking chips during a physica
 ## ADDED Requirements
 
 ### Requirement: Configure a session
-The app SHALL accept 2–9 players in seat order, a nonempty name for each, an equal positive integer starting stack, positive integer small and big blinds, and an initial dealer. The big blind MUST be at least twice the small blind and no larger than the starting stack. Defaults SHALL be 1000 starting chips and blinds of 5/10. All chip inputs and the session total MUST be safe integers. Names SHALL be unique after trimming and case normalization.
+The app SHALL accept 2–9 players in seat order, a nonempty name for each, an equal positive integer starting stack, positive integer small and big blinds, and an initial dealer. The big blind MUST be at least twice the small blind and no larger than the starting stack. Defaults SHALL be 500 starting chips and blinds of 10/20. All chip inputs and the session total MUST be safe integers. Names SHALL be unique after trimming and case normalization.
 
 #### Scenario: Start a valid session
 - **WHEN** the operator starts a session with Alice, Bob, and Cara, 1000 chips each, blinds 5/10, and Alice as dealer

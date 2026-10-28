@@ -150,3 +150,12 @@
  .table { width:100%; max-width:min(530px, calc(100vh - 160px)); margin:0 auto; }
  .seats { grid-template-columns:repeat(2, minmax(0, 1fr)); }
 }
+
+/* Avoid double-tap zoom on controls while preserving pinch-to-zoom. */
+button { touch-action: manipulation; }
+@media (pointer:coarse) {
+ input, select { font-size:16px; }
+}
+.header-actions { display:flex; align-items:center; gap:.5rem; }
+.language-button { padding:.5rem .7rem; font-size:.75rem; }
+.setup > .language-button { float:right; }

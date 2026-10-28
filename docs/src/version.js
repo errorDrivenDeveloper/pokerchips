@@ -2,7 +2,7 @@
 // new identifier without needing a build pipeline or a GitHub API request.
 const files = [
   '../index.html', '../styles.css', '../version.json', './main.js', './version.js',
-  './game/setup.js', './game/hand.js', './game/pots.js',
+  './game/setup.js', './game/hand.js', './game/pots.js', './i18n.js',
 ];
 const label = document.querySelector('#app-version');
 try {
