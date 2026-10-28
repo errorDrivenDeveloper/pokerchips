@@ -30,3 +30,57 @@
   .seat .stack { font-size: 1.05rem; margin: .2rem 0; }
   .seat-meta { font-size: .62rem; }
 }
+
+/* Anonymous cards show only how many community cards are on the real table. */
+.board { display:flex; gap:4px; margin-top:1rem; perspective:400px; }
+.board-card { width:27px; height:38px; display:grid; place-items:center; border-radius:4px; border:1px solid #e7e3c6; }
+.board-card.empty { border:1px dashed #bad4bc66; background:#0b482d55; }
+.board-card.dealt { background:#eee8d3; color:#3c6c51; box-shadow:0 2px 4px #0005; font-size:.8rem; }
+.board-card.dealing { animation:deal-card .55s cubic-bezier(.2,.75,.3,1) backwards; animation-delay:calc(var(--deal-order) * 100ms); }
+.flying-chip { position:fixed; z-index:15; pointer-events:none; width:26px; height:26px; border-radius:50%; border:4px dashed #f7e7b4; background:#b45043; box-shadow:0 2px 5px #0009, inset 0 0 0 2px #8e3a32; }
+@keyframes deal-card { from { opacity:0; transform:translate(-55px,-55px) rotate(-20deg) scale(.65); } to { opacity:1; transform:none; } }
+@media (max-width:800px) { .board { gap:2px; margin-top:.3rem; } .board-card { width:17px; height:23px; border-radius:3px; } .board-card.dealt { font-size:.55rem; } }
+@media (prefers-reduced-motion:reduce) { .board-card.dealing { animation:none; } }
+
+/* Pot chips are grouped by denomination; the label gives the exact count. */
+.pot-chips { display:flex; align-items:flex-end; justify-content:center; gap:5px; min-height:38px; margin-top:5px; max-width:90%; }
+.pot-stack { display:flex; min-width:28px; flex-direction:column; align-items:center; gap:3px; letter-spacing:0; }
+.pot-stack-pile { display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:24px; }
+.pot-chip { display:block; width:25px; height:7px; border-radius:50%; border:1px dashed #f4eee0; margin-top:-2px; box-shadow:0 2px 1px #0008; }
+.chip-white { background:#e8e5d9; border-color:#87988b; }
+.chip-red { background:#be4d42; }
+.chip-blue { background:#477ab2; }
+.chip-green { background:#42905c; }
+.chip-black { background:#343b3a; }
+.chip-purple { background:#9560a9; }
+.chip-gold { background:#cfaa4f; }
+.pot-chip-label { color:#ecf0dc; font-size:.57rem; font-weight:700; white-space:nowrap; }
+@media (max-width:800px) {
+ .pot-chips { gap:2px; min-height:24px; margin-top:1px; max-width:100%; }
+ .pot-stack { min-width:16px; gap:1px; }
+ .pot-stack-pile { height:15px; }
+ .pot-chip { width:16px; height:5px; margin-top:-2px; }
+ .pot-chip-label { font-size:.42rem; }
+}
+
+/* Seat stacks use the same denominations as the pot, in a compact row. */
+.seat .player-chips { justify-content:flex-start; flex-wrap:wrap; max-width:100%; min-height:0; margin:.25rem 0 .45rem; gap:3px; }
+.seat .pot-stack { min-width:22px; }
+.seat .pot-stack-pile { height:18px; }
+.seat .pot-chip { width:20px; height:6px; }
+.seat .pot-chip-label { font-size:.52rem; }
+.seat.celebrate-win { animation:winner-glow 1.4s ease-out; }
+.payout-chip-1 { background:#d8b75f; }
+.payout-chip-2 { background:#5597aa; }
+@keyframes winner-glow {
+ 0%, 100% { box-shadow:none; }
+ 25%, 60% { border-color:#f8d77b; box-shadow:0 0 0 3px #e9ca7780, 0 0 28px #e7c96d99; }
+}
+@media (max-width:800px) {
+ .seat .player-chips { gap:2px; margin:.2rem 0; }
+ .seat .pot-stack { min-width:16px; }
+ .seat .pot-stack-pile { height:14px; }
+ .seat .pot-chip { width:15px; height:5px; }
+ .seat .pot-chip-label { font-size:.42rem; }
+}
+@media (prefers-reduced-motion:reduce) { .seat.celebrate-win { animation:none; } }
