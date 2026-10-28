@@ -1,0 +1,2 @@
+import { defineConfig, devices } from '@playwright/test';
+export default defineConfig({ testDir: './tests/browser', use: { baseURL: 'http://127.0.0.1:4173' }, projects: [ { name: 'chromium', use: { ...devices['Desktop Chrome'], viewport: { width:1440, height:900 } } }, { name:'mobile-webkit', use: { ...devices['iPhone 13'], viewport: { width:390, height:844 } } } ], webServer: { command:'npm run serve', url:'http://127.0.0.1:4173', reuseExistingServer:true } });
