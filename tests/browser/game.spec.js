@@ -136,3 +136,14 @@ test('reduced motion disables winner effects', async ({page}) => {
  await expect(page.locator('.win-celebration')).toHaveCount(0);
  await expect(page.getByText('Cara won 10')).toBeVisible();
 });
+
+test('the displayed app version matches the files and remains visible during play', async ({ page }) => {
+ const { execFileSync } = await import('node:child_process');
+ const expected = execFileSync('node', ['scripts/version.js'], { encoding:'utf8' }).trim();
+ await page.goto('/poker/');
+ await expect(page.locator('#app-version')).toHaveText(expected);
+ await page.getByRole('button',{name:/Start the game/}).click();
+ await expect(page.locator('#app-version')).toHaveText(expected);
+ await page.reload();
+ await expect(page.locator('#app-version')).toHaveText(expected);
+});

@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "node scripts/serve.js",
     "test": "node --test tests/*.test.js",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "version": "node scripts/version.js"
   },
   "devDependencies": {
     "@playwright/test": "^1.56.0"

@@ -96,3 +96,5 @@
 @keyframes confetti-fall { 0% { opacity:0; transform:translate(0, 0) rotate(0); } 10% { opacity:1; } 80% { opacity:1; } 100% { opacity:0; transform:translate(var(--drift), 95vh) rotate(var(--spin)); } }
 @media (max-width:800px) { .win-banner { top:8%; padding:.65rem 1rem; } .confetti { width:7px; height:12px; } }
 @media (prefers-reduced-motion:reduce) { .win-celebration { display:none; } }
+
+.version-footer { text-align:center; padding:.4rem 1rem 1rem; color:#9fb2a4; font-size:.7rem; letter-spacing:.04em; }
