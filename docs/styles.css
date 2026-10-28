@@ -98,3 +98,55 @@
 @media (prefers-reduced-motion:reduce) { .win-celebration { display:none; } }
 
 .version-footer { text-align:center; padding:.4rem 1rem 1rem; color:#9fb2a4; font-size:.7rem; letter-spacing:.04em; }
+
+/* In phone landscape, keep the table and seats beside the action panel. */
+@media (orientation:landscape) and (max-height:550px) and (max-width:1000px) {
+ .shell { padding:.35rem .65rem; }
+ header h1 { font-size:1.3rem; }
+ header .eyebrow { font-size:.5rem; }
+ header button { padding:.35rem .6rem; font-size:.7rem; }
+ .status { margin:.3rem 0; padding:.3rem 0; gap:1rem; }
+ .layout { grid-template-columns:minmax(0, 1fr) minmax(240px, 34%); gap:.65rem; align-items:start; }
+ .table-area { display:grid; grid-template-columns:minmax(100px, 30%) minmax(0, 1fr); align-items:center; gap:.55rem; }
+ .table { width:100%; max-width:150px; border-width:7px; margin:0 auto; }
+ .felt { font-size:.48rem; }
+ .felt .eyebrow { font-size:.45rem; }
+ .pot { font-size:1.75rem; }
+ .board { gap:2px; margin-top:.2rem; }
+ .board-card { width:16px; height:22px; }
+ .board-card.dealt { font-size:.5rem; }
+ .pot-chips { gap:2px; min-height:22px; margin-top:1px; max-width:100%; }
+ .pot-stack { min-width:15px; gap:1px; }
+ .pot-stack-pile { height:14px; }
+ .pot-chip { width:15px; height:5px; margin-top:-2px; }
+ .pot-chip-label { font-size:.4rem; }
+ .seats { grid-template-columns:repeat(2, minmax(0,1fr)); gap:.3rem; }
+ .seat { padding:.35rem .45rem; }
+ .seat-head { font-size:.75rem; }
+ .seat .stack { font-size:1rem; margin:.15rem 0; }
+ .seat-meta { font-size:.6rem; }
+ .seat .player-chips { gap:2px; margin:.1rem 0; }
+ .seat .pot-stack { min-width:15px; }
+ .seat .pot-stack-pile { height:13px; }
+ .seat .pot-chip { width:15px; height:5px; }
+ .seat .pot-chip-label { font-size:.4rem; }
+ .layout .panel { order:0; padding:.6rem .75rem; }
+ .panel h2 { font-size:1.2rem; }
+ .panel p { margin:.2rem 0; font-size:.8rem; }
+ .panel .actions { margin:.35rem 0; gap:.3rem; }
+ .panel button { padding:.4rem .55rem; font-size:.78rem; }
+ .panel form { padding-top:.35rem; display:grid; gap:.2rem; grid-template-columns:minmax(0,1fr) auto; align-items:end; }
+ .panel form label { grid-column:1; }
+ .panel form input { padding:.35rem .45rem; }
+ .panel form small, .panel form output { grid-column:1 / -1; font-size:.62rem; }
+ .panel form button { grid-column:2; grid-row:1; }
+ .panel .undo { margin-top:.3rem; }
+ .version-footer { padding:.2rem; }
+}
+
+/* Use desktop width for the table and the seats instead of stacking them. */
+@media (min-width:801px) and (min-height:551px) {
+ .table-area { display:grid; grid-template-columns:minmax(130px, 45%) minmax(0, 1fr); align-items:center; gap:1rem; }
+ .table { width:100%; max-width:min(530px, calc(100vh - 160px)); margin:0 auto; }
+ .seats { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+}

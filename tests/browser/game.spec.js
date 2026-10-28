@@ -147,3 +147,38 @@ test('the displayed app version matches the files and remains visible during pla
  await page.reload();
  await expect(page.locator('#app-version')).toHaveText(expected);
 });
+
+test('four player landscape keeps seats and betting controls on screen', async ({browser}) => {
+ const context = await browser.newContext({viewport:{width:844,height:390},isMobile:true,hasTouch:true});
+ const page = await context.newPage();
+ await page.goto('/');
+ await page.getByRole('button',{name:'+ Add player'}).click();
+ await page.getByRole('textbox',{name:'Player 4'}).fill('Dana');
+ await page.getByRole('button',{name:/Start the game/}).click();
+ for (const selector of ['[data-seat="0"]','[data-seat="1"]','[data-seat="2"]','[data-seat="3"]','.table','[data-action="fold"]','[data-action="call"]','#raise-form button']) {
+  const box=await page.locator(selector).boundingBox();
+  expect(box.y, selector).toBeGreaterThanOrEqual(0);
+  expect(box.y+box.height, selector).toBeLessThanOrEqual(390);
+ }
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+ await page.screenshot({path:'test-results/landscape-four-players.png'});
+ await context.close();
+});
+
+test('four player desktop layout fits multiple landscape windows', async ({ browser }) => {
+ for (const viewport of [{width:1366,height:768}, {width:1024,height:600}]) {
+  const context = await browser.newContext({ viewport });
+  const page = await context.newPage();
+  await page.goto('/'); await page.getByRole('button',{name:'+ Add player'}).click();
+  await page.getByRole('textbox',{name:'Player 4'}).fill('Dana');
+  await page.getByRole('button',{name:/Start the game/}).click();
+  for(const selector of ['header','[data-seat="0"]','[data-seat="1"]','[data-seat="2"]','[data-seat="3"]','.table','[data-action="call"]','#raise-form button']) {
+   const box=await page.locator(selector).boundingBox();
+   expect(box.y, `${viewport.width} ${selector}`).toBeGreaterThanOrEqual(0);
+   expect(box.y+box.height, `${viewport.width} ${selector}`).toBeLessThanOrEqual(viewport.height);
+  }
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({path:`test-results/desktop-${viewport.width}.png`});
+  await context.close();
+ }
+});
