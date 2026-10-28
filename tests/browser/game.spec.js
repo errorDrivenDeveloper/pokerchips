@@ -31,3 +31,21 @@ test('return to player and chip setup without accidental reset', async ({page}) 
  await page.getByRole('button',{name:/Start the game/}).click();
  await expect(page.getByRole('heading',{name:/Alex.*preflop/})).toBeVisible();
 });
+
+test('mobile actions are visible without scrolling', async ({ browser }) => {
+ const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+ const page = await context.newPage();
+ await page.goto('/');
+ await page.getByRole('button',{name:/Start the game/}).click();
+ for (const label of ['Fold', 'Call 10', 'All in 1000', 'Raise']) {
+   const button = page.getByRole('button', { name: label, exact: true });
+   await expect(button).toBeVisible();
+   const box = await button.boundingBox();
+   expect(box.y).toBeGreaterThanOrEqual(0);
+   expect(box.y + box.height).toBeLessThanOrEqual(844);
+ }
+ expect(await page.evaluate(() => window.scrollY)).toBe(0);
+ expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+ await page.screenshot({path:'test-results/mobile-actions.png', fullPage:true});
+ await context.close();
+});
