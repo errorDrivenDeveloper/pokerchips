@@ -25,3 +25,19 @@ test('splits odd chips clockwise and supports replacement in the preview', () =>
   assert.throws(() => previewAwards(pot, [[]], [0,1,2], 2));
   assert.throws(() => previewAwards(pot, [[2]], [0,1,2], 2));
 });
+
+test('folded contributions do not create a side pot when remaining players are equally eligible', () => {
+  const result = derivePots([
+    {id:0,contribution:100}, {id:1,contribution:20,folded:true}, {id:2,contribution:100},
+  ]);
+  assert.deepEqual(result, {returned:[0,0,0], pots:[{amount:220,eligible:[0,2]}]});
+});
+test('folded contributions merge into the appropriate pots with a genuine all-in', () => {
+  const result = derivePots([
+    {id:0,contribution:50}, {id:1,contribution:100}, {id:2,contribution:100},
+    {id:3,contribution:20,folded:true}, {id:4,contribution:75,folded:true},
+  ]);
+  assert.deepEqual(result, {returned:[0,0,0,0,0], pots:[
+    {amount:220,eligible:[0,1,2]}, {amount:125,eligible:[1,2]},
+  ]});
+});

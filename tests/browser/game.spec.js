@@ -275,3 +275,20 @@ test('German controls fit a phone landscape with four players', async ({ browser
  expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth)).toBe(true);
  await context.close();
 });
+
+test('a folded blind does not create a spurious side pot at showdown', async ({page}) => {
+ await page.goto('/'); await startWithOriginalValues(page);
+ await page.getByRole('button',{name:'Call 10'}).click();
+ await page.getByRole('button',{name:'Fold'}).click();
+ await page.getByRole('button',{name:'Check'}).click();
+ for (const street of ['flop','turn','river']) {
+  await page.getByRole('button',{name:`${street} revealed →`}).click();
+  await page.getByRole('button',{name:'Check'}).click();
+  await page.getByRole('button',{name:'Check'}).click();
+ }
+ await expect(page.locator('.pot-choice')).toHaveCount(1);
+ await expect(page.locator('.pot-choice')).toContainText('Main pot · 25 chips');
+ await page.getByRole('button',{name:'Alice',exact:true}).click();
+ await page.getByRole('button',{name:'Confirm payout'}).click();
+ await expect(page.getByText('Alice won 25')).toBeVisible();
+});

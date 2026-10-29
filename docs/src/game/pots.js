@@ -11,11 +11,19 @@ export function derivePots(players) {
   }
   const levels = [...new Set(contributions.filter(n => n > 0))].sort((a, b) => a - b);
   let previous = 0;
-  const pots = levels.map(level => {
+  const pots = [];
+  levels.forEach(level => {
     const covering = players.filter((_, i) => contributions[i] >= level);
     const pot = { amount: (level - previous) * covering.length, eligible: covering.filter(p => !p.folded).map(p => p.id) };
     previous = level;
-    return pot;
+    // Folded players contribute dead money but cannot create a new group of
+    // eligible winners. Adjacent layers with the same eligibility are one pot.
+    const prior = pots.at(-1);
+    if (prior && prior.eligible.length === pot.eligible.length && prior.eligible.every((id, i) => id === pot.eligible[i])) {
+      prior.amount += pot.amount;
+    } else {
+      pots.push(pot);
+    }
   });
   return { pots, returned };
 }
